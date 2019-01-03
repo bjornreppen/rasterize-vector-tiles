@@ -25,7 +25,8 @@ rasterize-vector-tiles converts vector tile sets in .mbtiles SQLite archives to 
 
 rasterize-vector-tiles has command-line options:
 
-```
+```console
+$ npx rasterize-vector-tiles
 Usage: npx rasterize-vector-tiles <source> <target>
 
 source    Vector tile set in .mbtiles format
@@ -41,9 +42,9 @@ Options:
 
 ## Sample workflow
 
-```
+```sh
 # Rasterize the highest zoom level in source
-node rasterize-vector-tiles.js src_vtiles.mbtiles" dest_png.mbtiles --colorprop value --nodata 255
+node rasterize-vector-tiles.js src_vtiles.mbtiles dest_png.mbtiles --colorprop value --nodata 255
 
 # Build all lower zoom levels
 gdaladdo -r average gradient.3857.mbtiles 2 4 8 16 32 64 128 256 512 1024 2048
