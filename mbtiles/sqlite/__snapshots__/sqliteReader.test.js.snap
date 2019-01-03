@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getColumns 1`] = `
+Array [
+  "col1",
+  "col2",
+  "col3",
+]
+`;
+
+exports[`listRows 1`] = `
+Array [
+  Object {
+    "name": "a",
+    "size": 3,
+  },
+  Object {
+    "name": "b",
+    "size": 0,
+  },
+  Object {
+    "name": "",
+    "size": null,
+  },
+]
+`;
+
+exports[`listTables 1`] = `
+Array [
+  Object {
+    "name": "threecolumns",
+  },
+]
+`;
+
+exports[`listTables missing file 1`] = `[Error: SQLITE_CANTOPEN: unable to open database file]`;
+
+exports[`read 1`] = `"abc"`;
+
+exports[`read invalid tablename 1`] = `[Error: SQLITE_ERROR: no such table: missingtable]`;
+
+exports[`read missing 1`] = `null`;
