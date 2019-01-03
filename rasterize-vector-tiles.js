@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 "use strict"
-const log = require("log-less-fancy")()
 const meow = require("meow")
-const foo = require(".")
+var log = require("./log")
 
 const cli = meow(
   `
@@ -48,6 +47,7 @@ const cli = meow(
       },
       zoomlevel: {
         type: "number",
+        alias: "zoom",
         default: 99
       },
       bitmapsize: {
@@ -62,7 +62,7 @@ const cli = meow(
   }
 )
 
-log.warn(cli)
+log.debug(cli)
 
 const render = require("./render")
 const { decodePbf } = require("./mbtiles/pbf/pbf_dump")
@@ -79,12 +79,11 @@ const metadata = {
 }
 
 const option = cli.flags
-//console.log(option)
 
 async function rasterize(targetdb) {
-  log.info("Reading from " + option.source)
+  log.info(`Reading '${option.source}'`)
   const files = await listFiles(option.source, option.zoomlevel)
-  console.log("Source tile count: " + files.length)
+  log.info("Source tile count: " + files.length)
   for (let i = 0; i < files.length; i++) await rasterizeTile(files[i], targetdb)
   targetdb.close()
 }
@@ -102,6 +101,7 @@ async function rasterizeTile(vtile, targetdb) {
 }
 
 async function convert() {
+  log.info(`Creating '${option.target}'`)
   const targetdb = await createMbtile(option.target, metadata)
   await rasterize(targetdb)
 }

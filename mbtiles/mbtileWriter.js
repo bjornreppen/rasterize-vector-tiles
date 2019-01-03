@@ -1,4 +1,4 @@
-const log = require("log-less-fancy")()
+const log = require("../log")
 const { writeExec, writedb } = require("./sqlite/sqlite")
 const fs = require("fs")
 const sqlite3 = require("sqlite3")

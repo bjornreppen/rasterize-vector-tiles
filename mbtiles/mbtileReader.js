@@ -1,4 +1,4 @@
-const log = require("log-less-fancy")()
+var log = require("../log")
 const { dball } = require("./sqlite/sqlite")
 
 async function readTile(file, zoom, column, row) {

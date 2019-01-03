@@ -7,7 +7,6 @@ function render(pbfjson, option) {
   const canvas = createCanvas(size, size)
   const ctx = canvas.getContext("2d")
   ctx.antialias = option.antialias
-  console.warn(ctx.antialias)
   Object.keys(pbfjson.layers).forEach(key =>
     drawGeometries(ctx, pbfjson.layers[key].features, scaling, option)
   )
@@ -20,7 +19,11 @@ function drawGeometries(ctx, features, scaling, option) {
     const level = feature.properties[option.colorprop]
     if (level === undefined)
       throw new Error(
-        `No property named '${option.colorprop}' in source mbtiles`
+        `No property named '${
+          option.colorprop
+        }' in source tile. Try '--colorprop ${Object.keys(
+          feature.properties
+        ).join("/")}'`
       )
     if (level !== option.nodata) {
       ctx.fillStyle = `rgb(${level},${level},${level})`
@@ -34,10 +37,7 @@ function drawGeometries(ctx, features, scaling, option) {
 function drawGeometry(ctx, type, geom, scaling) {
   if (type !== 3) return // Polygons only
   ctx.beginPath()
-  geom.forEach(coord => {
-    ctx.lineTo(coord.x * scaling, coord.y * scaling)
-  })
-
+  geom.forEach(coord => ctx.lineTo(coord.x * scaling, coord.y * scaling))
   ctx.fill()
 }
 

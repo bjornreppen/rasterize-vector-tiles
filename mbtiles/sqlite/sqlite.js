@@ -1,4 +1,4 @@
-const log = require("log-less-fancy")()
+const log = require("../../log")
 const sqlite3 = require("sqlite3")
 const fs = require("fs")
 var path = require("path")
