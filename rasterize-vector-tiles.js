@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 "use strict"
 const meow = require("meow")
-var log = require("./log")
+const log = require("./log")
+const target = require("./target")
+const render = require("./render")
+const { decodePbf } = require("./mbtiles/pbf/pbf_dump")
+const { readTile, readMetadata, listFiles } = require("./mbtiles/mbtileReader")
 
 const cli = meow(
   `
@@ -20,7 +24,6 @@ const cli = meow(
 
 	Examples
 	  $ rasterize-vector-tiles -i vector.mbtiles -o raster.mbtiles -prop value
-	  🌈 unicorns 🌈
 `,
   {
     flags: {
@@ -64,20 +67,6 @@ const cli = meow(
 
 log.debug(cli)
 
-const render = require("./render")
-const { decodePbf } = require("./mbtiles/pbf/pbf_dump")
-const { readTile, readMetadata, listFiles } = require("./mbtiles/mbtileReader")
-const { writeTile, createMbtile } = require("./mbtiles/mbtileWriter")
-const fs = require("fs")
-
-const metadata = {
-  name: "",
-  type: "overlay",
-  version: 1,
-  description: "",
-  format: "png"
-}
-
 const option = cli.flags
 
 async function rasterize(targetdb) {
@@ -92,17 +81,12 @@ async function rasterizeTile(vtile, targetdb) {
   const pbfjson = decodePbf(vtile.tile_data)
   const imageBuffer = render(pbfjson, option)
   const { zoom_level, tile_column, tile_row } = vtile
-  if (option.png)
-    fs.writeFileSync(
-      `${zoom_level}_${tile_column}_${tile_row}.png`,
-      imageBuffer
-    )
-  else await writeTile(targetdb, zoom_level, tile_column, tile_row, imageBuffer)
+  targetdb.createTile(zoom_level, tile_column, tile_row, imageBuffer)
 }
 
 async function convert() {
   log.info(`Creating '${option.target}'`)
-  const targetdb = await createMbtile(option.target, metadata)
+  const targetdb = await target.create(option.png, option.target)
   await rasterize(targetdb)
 }
 

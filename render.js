@@ -17,14 +17,16 @@ function render(pbfjson, option) {
 function drawGeometries(ctx, features, scaling, option) {
   features.forEach(feature => {
     const level = feature.properties[option.colorprop]
-    if (level === undefined)
+    if (level === undefined) {
+      const props = Object.keys(feature.properties)
+      if (props.length === 0)
+        throw new Error("No feature properties in source file.")
       throw new Error(
         `No property named '${
           option.colorprop
-        }' in source tile. Try '--colorprop ${Object.keys(
-          feature.properties
-        ).join("/")}'`
+        }' in source tile. Try '--colorprop ${props.join("/")}'`
       )
+    }
     if (level !== option.nodata) {
       ctx.fillStyle = `rgb(${level},${level},${level})`
       feature.geom.forEach(geom => {

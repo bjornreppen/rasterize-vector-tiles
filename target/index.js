@@ -1,4 +1,8 @@
-const { writeTile, createMbtile } = require("../mbtiles/mbtileWriter")
+const {
+  writeTile,
+  createMbtile,
+  createIndex
+} = require("../mbtiles/mbtileWriter")
 const fs = require("fs")
 const path = require("path")
 
@@ -47,6 +51,7 @@ class Mbtiles {
   }
 
   close() {
+    createIndex(this.mbtiles)
     this.mbtiles.close()
   }
 }

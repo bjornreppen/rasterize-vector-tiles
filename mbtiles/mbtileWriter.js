@@ -24,10 +24,6 @@ async function createMbtile(file, metadata) {
     db,
     "CREATE TABLE tiles (zoom_level integer, tile_column integer, tile_row integer, tile_data blob);"
   )
-  await writeExec(
-    db,
-    "CREATE UNIQUE INDEX tile_index on tiles (zoom_level, tile_column, tile_row);"
-  )
 
   Object.keys(metadata).forEach(key => {
     const value = metadata[key]
@@ -37,4 +33,11 @@ async function createMbtile(file, metadata) {
   return db
 }
 
-module.exports = { writeTile, createMbtile }
+async function createIndex(db) {
+  await writeExec(
+    db,
+    "CREATE UNIQUE INDEX tile_index on tiles (zoom_level, tile_column, tile_row);"
+  )
+}
+
+module.exports = { writeTile, createMbtile, createIndex }
