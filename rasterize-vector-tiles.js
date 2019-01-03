@@ -51,8 +51,8 @@ const option = {
   bitmapsize: 256,
   colorprop: argv.colorprop || "value",
   nodata: argv.nodata || 255,
-  antialias: argv.antialias || "none"
-  zoomlevel: argv.zoomlevel || 99
+  antialias: argv.antialias || "none",
+  zoomlevel: argv.zoomlevel || 99,
   png: argv.png
 }
 
@@ -68,10 +68,12 @@ async function rasterizeTile(vtile, targetdb) {
   const pbfjson = decodePbf(vtile.tile_data)
   const imageBuffer = render(pbfjson, option)
   const { zoom_level, tile_column, tile_row } = vtile
-  if(option.png)
-    fs.writeFileSync(`${zoom_level}_${tile_column}_${tile_row}.png`, imageBuffer)
-  else
-    await writeTile(targetdb, zoom_level, tile_column, tile_row, imageBuffer)
+  if (option.png)
+    fs.writeFileSync(
+      `${zoom_level}_${tile_column}_${tile_row}.png`,
+      imageBuffer
+    )
+  else await writeTile(targetdb, zoom_level, tile_column, tile_row, imageBuffer)
 }
 
 async function convert(targetMbtilePath) {

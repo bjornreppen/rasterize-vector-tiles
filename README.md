@@ -35,6 +35,8 @@ Options:
    --colorprop value    Feature property to use for gray level (0-255), default='value'
    --nodata    255      Colorprop value to interpret as nodata (will not be rendered), default=255
    --antialias none     Control anti-aliasing (none/default/gray/subpixel), default=none
+   --zoomlevel 14       Upper limit on zoom level to rasterize (0-99), default=highest in input file
+   --png                Export as individual png files rather than .mbtiles archive
 ```
 
 ## Sample workflow
