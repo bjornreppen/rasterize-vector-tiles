@@ -6,9 +6,9 @@ const {
 const fs = require("fs")
 const path = require("path")
 
-async function create(png, filePath) {
+async function create(zoomlevel, png, filePath) {
   const target = png ? new PngFiles() : new Mbtiles()
-  await target.create(filePath)
+  await target.create(filePath, zoomlevel)
   return target
 }
 
@@ -29,13 +29,15 @@ class PngFiles {
 }
 
 class Mbtiles {
-  async create(filePath) {
+  async create(filePath, zoomlevel) {
     const metadata = {
       name: "",
       type: "overlay",
       version: 1,
       description: "",
-      format: "png"
+      format: "png",
+      minzoom: zoomlevel,
+      maxzoom: zoomlevel
     }
     this.mbtiles = await createMbtile(filePath, metadata)
   }

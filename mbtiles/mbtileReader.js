@@ -28,7 +28,8 @@ async function listFiles(file, maxzoom) {
   log.info("Rasterizing zoom level " + zoom)
   const sql =
     "SELECT zoom_level, tile_column, tile_row, tile_data FROM tiles WHERE zoom_level=?"
-  return await dball(file, sql, [zoom])
+  const files = await dball(file, sql, [zoom])
+  return { zoomlevel: zoom, files }
 }
 
 module.exports = { readTile, readMetadata, listFiles }
