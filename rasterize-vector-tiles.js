@@ -69,10 +69,14 @@ log.debug(cli)
 
 const option = cli.flags
 
-async function rasterize(targetdb) {
+async function readSource() {
   log.info(`Reading '${option.source}'`)
-  const files = await listFiles(option.source, option.zoomlevel)
-  log.info("Source tile count: " + files.length)
+  const source = await listFiles(option.source, option.zoomlevel)
+  log.info("Source tile count: " + source.files.length)
+  return source
+}
+
+async function rasterize(files, targetdb) {
   for (let i = 0; i < files.length; i++) await rasterizeTile(files[i], targetdb)
   targetdb.close()
 }
@@ -86,8 +90,13 @@ async function rasterizeTile(vtile, targetdb) {
 
 async function convert() {
   log.info(`Creating '${option.target}'`)
-  const targetdb = await target.create(option.png, option.target)
-  await rasterize(targetdb)
+  const source = await readSource()
+  const targetdb = await target.create(
+    source.zoomlevel,
+    option.png,
+    option.target
+  )
+  await rasterize(source.files, targetdb)
 }
 
 convert().then((reject, resolve) => {
