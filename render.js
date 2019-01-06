@@ -7,6 +7,10 @@ function render(pbfjson, option) {
   const canvas = createCanvas(size, size)
   const ctx = canvas.getContext("2d")
   ctx.antialias = option.antialias
+
+  // Transparent white background, canvas defaults to black
+  ctx.fillStyle = `rgba(255,255,255,0.0)`
+  ctx.fillRect(0,0msize,size)
   Object.keys(pbfjson.layers).forEach(key =>
     drawGeometries(ctx, pbfjson.layers[key].features, scaling, option)
   )
