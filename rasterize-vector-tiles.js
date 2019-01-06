@@ -42,7 +42,7 @@ const cli = meow(
       },
       nodata: {
         type: "number",
-        default: 255
+        default: -1
       },
       antialias: {
         type: "string",
