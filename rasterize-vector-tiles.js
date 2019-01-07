@@ -17,6 +17,7 @@ const cli = meow(
     --source, -i   Vector tile set in .mbtiles format
     --target, -o   Raster tile set to be created (.mbtiles)
     --colorprop    Feature property to use for gray level (0-255), default='value'"
+    --colorvalue   Single color value gray level (0-255) to use on all pixels (overrides colorprop), default=''"
     --nodata       Colorprop value to interpret as nodata (will not be rendered), default=255"
     --antialias    Control anti-aliasing (none/default/gray/subpixel), default='default'"
     --zoomlevel    Upper limit on zoom level to rasterize (0-99), default=highest in input file"
@@ -40,6 +41,9 @@ const cli = meow(
         type: "string",
         alias: "prop",
         default: "value"
+      },
+      colorvalue: {
+        type: "string"
       },
       nodata: {
         type: "number",

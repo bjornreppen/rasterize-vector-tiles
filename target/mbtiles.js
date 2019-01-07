@@ -1,5 +1,6 @@
 // Writes rendered tiles to mbtiles sqlite database
 const {
+  open,
   writeTile,
   createMbtile,
   createIndex
@@ -7,6 +8,7 @@ const {
 
 class Mbtiles {
   async create(filePath, zoomlevel) {
+    this.filePath = filePath
     const metadata = {
       name: "",
       type: "overlay",
@@ -16,22 +18,20 @@ class Mbtiles {
       minzoom: zoomlevel,
       maxzoom: zoomlevel
     }
-    this.mbtiles = await createMbtile(filePath, metadata)
+    const mbtiles = await createMbtile(filePath, metadata)
+    mbtiles.close()
   }
 
   async createTile(zoom_level, tile_column, tile_row, imageBuffer) {
-    await writeTile(
-      this.mbtiles,
-      zoom_level,
-      tile_column,
-      tile_row,
-      imageBuffer
-    )
+    const mbtiles = open(this.filePath)
+    await writeTile(mbtiles, zoom_level, tile_column, tile_row, imageBuffer)
+    mbtiles.close()
   }
 
   close() {
-    createIndex(this.mbtiles)
-    this.mbtiles.close()
+    const mbtiles = open(this.filePath)
+    createIndex(mbtiles)
+    mbtiles.close()
   }
 }
 
