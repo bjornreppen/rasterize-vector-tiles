@@ -13,7 +13,7 @@ function printprogress(start, tilesComplete, totalTiles) {
   process.stdout.write(
     `${tilesComplete}/${totalTiles} (${progress.toFixed(
       2
-    )}%)\tSpeed: ${tilespersec.toFixed(
+    )}%)\t${tilespersec.toFixed(
       2
     )} tiles/sec\t Completion est: ${est.toLocaleTimeString()}`
   )

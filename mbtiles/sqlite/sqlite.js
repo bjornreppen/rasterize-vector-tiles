@@ -29,7 +29,6 @@ function writedb(db, sql, args = []) {
 }
 
 function dball(file, sql, args = []) {
-  log.info("Open " + file)
   log.debug("SQL   : " + sql)
   return new Promise((resolve, reject) => {
     const db = new sqlite3.Database(file, sqlite3.OPEN_READONLY, err => {

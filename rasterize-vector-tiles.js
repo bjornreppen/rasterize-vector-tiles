@@ -17,7 +17,7 @@ const cli = meow(
     --source, -i   Vector tile set in .mbtiles format
     --target, -o   Raster tile set to be created (.mbtiles)
     --colorprop    Feature property to use for gray level (0-255), default='value'"
-    --colorvalue   Single color value gray level (0-255) to use on all pixels (overrides colorprop), default=''"
+    --color        Single color to use on all pixels (overrides colorprop), default=''"
     --nodata       Colorprop value to interpret as nodata (will not be rendered), default=255"
     --antialias    Control anti-aliasing (none/default/gray/subpixel), default='default'"
     --zoomlevel    Upper limit on zoom level to rasterize (0-99), default=highest in input file"
@@ -42,7 +42,7 @@ const cli = meow(
         alias: "prop",
         default: "value"
       },
-      colorvalue: {
+      color: {
         type: "string"
       },
       nodata: {
@@ -73,6 +73,16 @@ const cli = meow(
 log.debug(cli)
 
 const option = cli.flags
+log.info("Feature property controlling color: " + option.colorprop || "<empty>")
+log.info("Nodata value (ignored features):    " + option.nodata)
+log.info("Constant color for all geometries:  " + option.color)
+log.info("Antialiasing mode:                  " + option.antialias)
+log.info(
+  "Target bitmap size:                 " +
+    option.bitmapsize +
+    " x " +
+    option.bitmapsize
+)
 
 async function readSource() {
   log.info(`Reading '${option.source}'`)
@@ -99,8 +109,8 @@ async function rasterizeTile(vtile, targetdb) {
 }
 
 async function convert() {
-  log.info(`Creating '${option.target}'`)
   const source = await readSource()
+  log.info(`Creating '${option.target}'`)
   const targetdb = await target.create(
     source.zoomlevel,
     option.png,

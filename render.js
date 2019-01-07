@@ -20,7 +20,7 @@ function drawGeometries(ctx, features, scaling, option) {
     if (feature.type !== 3) return // Polygons only
 
     const level = feature.properties[option.colorprop]
-    if (level === undefined && !option.colorvalue) {
+    if (level === undefined && !option.color) {
       const props = Object.keys(feature.properties)
       if (props.length === 0)
         throw new Error("No feature properties in source file.")
@@ -33,9 +33,7 @@ function drawGeometries(ctx, features, scaling, option) {
 
     if (level === option.nodata) return
 
-    ctx.fillStyle = level
-      ? `rgb(${level},${level},${level})`
-      : option.colorvalue
+    ctx.fillStyle = level ? `rgb(${level},${level},${level})` : option.color
     feature.geom.forEach(geom => {
       drawGeometry(ctx, geom, scaling)
     })
