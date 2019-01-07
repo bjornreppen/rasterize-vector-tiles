@@ -10,7 +10,6 @@ class PngFiles {
   async createTile(zoom_level, tile_column, tile_row, imageBuffer) {
     const directory = path.join(this.path, `${zoom_level}/${tile_column}`)
     const fullPath = path.join(directory, `${tile_row}.png`)
-    debugger
     fs.mkdirSync(directory, { recursive: true })
     fs.writeFileSync(fullPath, imageBuffer)
   }
