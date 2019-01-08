@@ -87,6 +87,7 @@ log.info(
 async function readSource() {
   log.info(`Reading '${option.source}'`)
   const source = await listFiles(option.source, option.zoomlevel)
+  source.metadata = await readMetadata(option.source)
   log.info("Source tile count: " + source.files.length)
   return source
 }
@@ -111,11 +112,7 @@ async function rasterizeTile(vtile, targetdb) {
 async function convert() {
   const source = await readSource()
   log.info(`Creating '${option.target}'`)
-  const targetdb = await target.create(
-    source.zoomlevel,
-    option.png,
-    option.target
-  )
+  const targetdb = await target.create(source, option.png, option.target)
   await rasterize(source.files, targetdb)
 }
 

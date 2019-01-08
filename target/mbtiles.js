@@ -7,17 +7,13 @@ const {
 } = require("../mbtiles/mbtileWriter")
 
 class Mbtiles {
-  async create(filePath, zoomlevel) {
+  async create(filePath, source) {
     this.filePath = filePath
-    const metadata = {
-      name: "",
-      type: "overlay",
-      version: 1,
-      description: "",
-      format: "png",
-      minzoom: zoomlevel,
-      maxzoom: zoomlevel
-    }
+    const metadata = JSON.parse(JSON.stringify(source.metadata))
+    metadata.format = "png"
+    delete metadata.json
+    delete metadata.scheme
+    log.debug("raster tile metadata", metadata)
     const mbtiles = await createMbtile(filePath, metadata)
     mbtiles.close()
   }

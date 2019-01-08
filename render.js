@@ -34,9 +34,7 @@ function drawGeometries(ctx, features, scaling, option) {
     if (level === option.nodata) return
 
     ctx.fillStyle = level ? `rgb(${level},${level},${level})` : option.color
-    feature.geom.forEach(geom => {
-      drawGeometry(ctx, geom, scaling)
-    })
+    feature.geom.forEach(geom => drawGeometry(ctx, geom, scaling))
   })
 }
 
