@@ -1,4 +1,5 @@
 // Writes rendered tiles to mbtiles sqlite database
+const log = require("../log")
 const {
   open,
   writeTile,
