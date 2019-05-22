@@ -1,3 +1,5 @@
+const readline = require("readline");
+
 let lastUpdate = 0;
 
 // Updates the single line progress indicator on screen
@@ -10,7 +12,8 @@ function printprogress(start, tilesComplete, totalTiles) {
   const remainMs = (elapsedMs / tilesComplete) * (totalTiles - tilesComplete);
   const tilespersec = (tilesComplete / elapsedMs) * 1000;
   const est = new Date(Date.now() + remainMs);
-  process.stdout.cursorTo(0);
+  readline.clearLine(process.stdout, 0);
+  readline.cursorTo(process.stdout, 0, null);
   process.stdout.write(
     `${tilesComplete}/${totalTiles} (${progress.toFixed(
       2
