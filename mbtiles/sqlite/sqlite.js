@@ -1,7 +1,5 @@
 const log = require("../../log");
 const sqlite3 = require("sqlite3");
-const fs = require("fs");
-var path = require("path");
 
 // Strip injection unsafe characters from argument
 function safe(arg) {
